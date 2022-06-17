@@ -1,0 +1,71 @@
+<ng-container *ngIf="{ users: users$ | async, mode: mode$ | async } as data">
+  <ng-container *ngIf="ticketDetails$ | async as ticketDetails; loading">
+    <h2>Detail</h2>
+    <div class="detail-container">
+      <div class="element">
+        <strong>Id:</strong> <span>{{ ticketDetails.id }}</span>
+      </div>
+      <div class="element">
+        <strong>Description:</strong>
+        <span>{{ ticketDetails.description }}</span>
+      </div>
+      <div class="element" *ngIf="data.mode === 'list'">
+        <strong>Assigned To:</strong>
+        <span>{{
+          ticketDetails.user && ticketDetails.assigneeId
+            ? ticketDetails.user.name
+            : 'Not Assigned'
+        }}</span>
+      </div>
+      <form
+        [formGroup]="detailForm"
+        class="element"
+        *ngIf="data.users && data.mode === 'edit'"
+      >
+        <strong>Assign To:</strong>
+        <select [formControlName]="'newAssigneeId'" class="user-select">
+          <option *ngFor="let user of data.users" [value]="user.id">
+            {{ user.name }}
+          </option>
+        </select>
+      </form>
+      <div class="element">
+        <strong>Status:</strong>
+        <span>{{
+          ticketDetails.completed ? 'Completed' : 'Not Completed'
+        }}</span>
+      </div>
+      <div class="tools">
+        <button class="back-button" type="button" (click)="back()">Back</button
+        ><button
+          class="edit-button"
+          type="button"
+          (click)="data.mode === 'list' ? assign() : cancel()"
+        >
+          {{ data.mode === 'list' ? 'Assign' : 'Cancel' }}
+        </button>
+        <button
+          class="save-button"
+          type="button"
+          (click)="complete(ticketDetails.id)"
+          *ngIf="!ticketDetails.completed"
+        >
+          Complete
+        </button>
+        <button
+          class="save-button"
+          type="button"
+          (click)="save()"
+          [disabled]="!newAssigneeId.value"
+        >
+          Save
+        </button>
+      </div>
+      <div class="loading" *ngIf="loading$ | async">{{ loadingMessage }}</div>
+      <div class="message" *ngIf="message">{{ message }}</div>
+    </div>
+  </ng-container>
+  <ng-template #loading>
+    <div>Loading...</div>
+  </ng-template>
+</ng-container>

@@ -1,0 +1,28 @@
+.group {
+    display:flex;
+    flex-direction: row;
+    gap:10px;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.button-group {
+    display:grid;
+    grid-template-columns: repeat(2,1fr);
+    justify-items: center;
+    gap:10px;
+    width: 10rem;
+}
+
+.loading,.message {
+    margin-top: .5rem;
+    font-size: 1.2rem;
+    font-weight: bolder;
+}
+
+.button-group > button{
+    height: 2rem;
+    width: 5rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}

@@ -1,0 +1,24 @@
+html,
+body {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 100%;
+    -webkit-font-smoothing: auto;
+    -moz-osx-font-smoothing: auto;
+}
+
+/* Font size */
+html {
+    font-size: 16px;
+}
+
+body {
+    font-size: 0.875rem;
+}
+
+/* Stylistic alternates for Inter */
+body {
+    font-feature-settings: 'salt';
+}

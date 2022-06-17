@@ -1,0 +1,65 @@
+<div class="container">
+  <h2>Tickets</h2>
+  <ng-container
+    *ngIf="{ tickets: sortedTickets$ | async, users: users$ | async } as data"
+  >
+    <div *ngIf="!data.tickets || !data.users; else display">Loading...</div>
+    <ng-template #display>
+      <ng-container *ngIf="mode$ | async as mode">        
+        <ng-container *ngIf="mode === 'list'; else addTicketTemp">
+          <button type="button" class="add-button" (click)="addTicket()">Add Ticket</button>
+          <div class="filter">
+            <form [formGroup]="filterForm" class="filter-form">
+              <label>
+                <input type="radio" value="none" [formControlName]="'status'" />
+                <span>None</span>
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="completed"
+                  [formControlName]="'status'"
+                />
+                <span>Completed</span>
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  value="not-completed"
+                  [formControlName]="'status'"
+                />
+                <span>Not Completed</span>
+              </label>
+            </form>
+          </div>
+          <div
+            class="ticket-list"
+            *ngIf="data.tickets && data.tickets.length > 0; else noTickets"
+          >
+            <div class="header">
+              <div id="id">TICKET ID</div>
+              <div id="description">DESCRIPTION</div>
+              <div id="status">STATUS</div>              
+            </div>
+            <div *ngFor="let t of data.tickets" class="ticket-data" (click)="goToTicket(t.id)">
+              <div class="id">{{ t.id }}</div>
+              <div class="description">{{ t.description }}</div>
+              <div class="status">
+                {{ t.completed ? 'Completed' : 'Not Completed' }}
+              </div>              
+            </div>
+          </div>
+          <ng-template #noTickets
+            ><div class="no-tickets">
+              There are no Tickets for the selected Filter.
+            </div></ng-template
+          >
+          <div class="note">*Click on the ticket for details.</div>
+        </ng-container>
+        <ng-template #addTicketTemp>
+          <acme-add-ticket *ngIf="mode === 'add'"></acme-add-ticket>
+        </ng-template>
+      </ng-container>
+    </ng-template>
+  </ng-container>
+</div>

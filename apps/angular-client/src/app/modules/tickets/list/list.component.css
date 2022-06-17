@@ -1,0 +1,86 @@
+.container {
+    display:flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+h2{
+    align-self: center;
+}
+
+acme-add-ticket {
+    align-self: center;
+}
+
+.ticket-list {
+    display:flex;
+    flex-direction: column;
+}
+
+.header {
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.filter {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 3rem;
+}
+
+.filter-form {
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    width: 35%;   
+    align-items: center;
+    text-align: center;
+}
+
+.id,.status {
+    text-align: center;
+}
+
+
+.ticket-data {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    padding: .5rem;
+    align-items: center;
+    cursor: pointer;
+}
+
+.ticket-data:hover {
+    color: chocolate;
+    background-color:darkgrey
+}
+
+.user-select {
+    width:100%;
+    height: 30px;
+}
+
+.note {
+    font-weight: bolder;
+    margin-top: 1rem;
+}
+
+.no-tickets {
+    text-align: center;
+    font-weight: bolder;
+}
+
+.add-button {
+    height: 2rem;
+    width: 5rem;
+    margin-top: 1rem;
+    cursor: pointer;   
+    margin-bottom: 1rem;
+    align-self: center;
+}
+
+.complete-button {
+    justify-self: center;
+}

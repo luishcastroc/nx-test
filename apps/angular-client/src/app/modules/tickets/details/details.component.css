@@ -1,0 +1,46 @@
+.detail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 1rem;
+    justify-items: center;
+}
+
+.element {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    align-items: center;
+}
+
+.element>strong {
+    text-align: end;
+}
+
+.back-button,
+.save-button,
+.edit-button {
+    height: 2rem;
+    width: 5rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.tools {
+    align-self: center;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;    
+}
+
+.loading,.message {
+    margin-top: .5rem;
+    font-size: 1.2rem;
+    font-weight: bolder;
+    align-self: center;
+}
+
+.user-select {
+    height: 1.5rem;
+    width: 10rem;    
+}

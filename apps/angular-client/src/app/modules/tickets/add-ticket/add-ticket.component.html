@@ -1,0 +1,23 @@
+<form [formGroup]="ticketsForm">
+  <div class="group">
+    <label for="description">Description</label>
+    <textarea
+      type="text"
+      id="description"
+      [formControlName]="'description'"
+    ></textarea>
+  </div>
+  <div class="button-group">
+    <button type="button" class="add-button" (click)="cancel()">Back</button>
+    <button
+      type="button"
+      class="add-button"
+      (click)="save()"
+      [disabled]="ticketsForm.invalid"
+    >
+      Save
+    </button>
+  </div>
+  <div class="loading" *ngIf="loading$ | async">Saving...</div>
+  <div class="message" *ngIf="message">{{ message }}</div>
+</form>
