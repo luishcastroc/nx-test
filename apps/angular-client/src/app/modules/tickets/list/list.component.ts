@@ -1,11 +1,32 @@
-import { Mode, Ticket, User } from '@acme/shared-models';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { Mode, Ticket, TicketDetail, User } from '@acme/shared-models';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Navigate } from '@ngxs/router-plugin';
 import { Select, Store } from '@ngxs/store';
-import { Observable, Subject, takeUntil } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  Observable,
+  startWith,
+  Subject,
+  takeUntil,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 
-import { ChangeMode, GetTickets, GetUsers, SortTickets, TicketsState } from '../../../data';
+import {
+  ChangeMode,
+  GetTickets,
+  GetUsers,
+  SortTickets,
+  TicketsState,
+} from '../../../data';
 
 @Component({
   selector: 'acme-list',
@@ -15,10 +36,14 @@ import { ChangeMode, GetTickets, GetUsers, SortTickets, TicketsState } from '../
 })
 export class ListComponent implements OnInit, OnDestroy {
   @Select(TicketsState.users) users$!: Observable<User[]>;
-  @Select(TicketsState.sortedTickets) sortedTickets$!: Observable<Ticket[]>;
+
   @Select(TicketsState.getMode) mode$!: Observable<Mode>;
+  @Select(TicketsState.getTicketsWithDetails)
+  ticketsWithDetails$!: Observable<TicketDetail[]>;
+  searchResults$!: Observable<TicketDetail[]>;
   filterForm!: FormGroup;
   tickets$!: Observable<Ticket[]>;
+  searchBar = new FormControl();
 
   private _unsubscribeAll: Subject<null> = new Subject<null>();
 
@@ -38,7 +63,14 @@ export class ListComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((value) => {
         this._store.dispatch(new SortTickets(value));
-      });
+      }); 
+
+    this.searchResults$ = combineLatest([
+      this.searchBar.valueChanges.pipe(startWith('')),
+      this.ticketsWithDetails$,
+    ]).pipe(
+      map(([value, tickets]) => this._filter(value, tickets))
+    );
   }
 
   goToTicket(id: number): void {
@@ -52,5 +84,18 @@ export class ListComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this._unsubscribeAll.next(null);
     this._unsubscribeAll.complete();
+  }
+
+  private _filter(value: string, tickets: TicketDetail[]): TicketDetail[] {
+    if (!value || value === '') {
+      return tickets;
+    }
+    //getting the value from the input
+    const filterValue = value.toLowerCase();
+
+    // returning the filtered array
+    return tickets.filter((ticket) =>
+      ticket.description.toLowerCase().includes(filterValue)
+    );
   }
 }

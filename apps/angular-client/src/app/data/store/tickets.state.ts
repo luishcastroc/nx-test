@@ -79,6 +79,27 @@ export class TicketsState {
     };
   }
 
+  @Selector()
+  static getTicketsWithDetails({ users, sortedTickets }: TicketsStateModel): TicketDetail[] {
+    if(sortedTickets && sortedTickets.length > 0){
+      const ticketsReturn = sortedTickets.map(ticket => {
+        let user;
+        if(users && users.length > 0){
+          user = users.filter((user) => user.id === ticket.assigneeId);
+        }
+        if (user) {
+          return { ...ticket, user: { ...user[0] } };
+        } else {
+          return { ...ticket, user: null };
+        }
+      })
+
+      return ticketsReturn;
+    }else{
+      return []
+    }
+  }
+
   @Action(GetUsers)
   getUsers(ctx: StateContext<TicketsStateModel>) {
     return this.apiService.users().pipe(

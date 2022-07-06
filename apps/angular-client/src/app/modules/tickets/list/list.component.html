@@ -1,10 +1,10 @@
 <div class="container">
   <h2>Tickets</h2>
   <ng-container
-    *ngIf="{ tickets: sortedTickets$ | async, users: users$ | async } as data"
+    *ngIf="{ users: users$ | async, tickets: searchResults$ | async} as data"
   >
-    <div *ngIf="!data.tickets || !data.users; else display">Loading...</div>
-    <ng-template #display>
+    <div *ngIf="!data.users || !data.tickets; else display">Loading...</div>
+    <ng-template #display>      
       <ng-container *ngIf="mode$ | async as mode">        
         <ng-container *ngIf="mode === 'list'; else addTicketTemp">
           <button type="button" class="add-button" (click)="addTicket()">Add Ticket</button>
@@ -32,6 +32,9 @@
               </label>
             </form>
           </div>
+          <div class="search-bar">
+            <input type="text" [autocomplete]="'off'" [placeholder]="'Ticket search'" [formControl]="searchBar">
+          </div>          
           <div
             class="ticket-list"
             *ngIf="data.tickets && data.tickets.length > 0; else noTickets"
@@ -39,11 +42,17 @@
             <div class="header">
               <div id="id">TICKET ID</div>
               <div id="description">DESCRIPTION</div>
+              <div id="assignedTo">ASSIGNED TO</div>
               <div id="status">STATUS</div>              
             </div>
             <div *ngFor="let t of data.tickets" class="ticket-data" (click)="goToTicket(t.id)">
               <div class="id">{{ t.id }}</div>
               <div class="description">{{ t.description }}</div>
+              <div class="assignedTo">{{
+                t.user && t.assigneeId
+                  ? t.user.name
+                  : 'Not Assigned'
+              }}</div>
               <div class="status">
                 {{ t.completed ? 'Completed' : 'Not Completed' }}
               </div>              

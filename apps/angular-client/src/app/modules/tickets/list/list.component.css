@@ -19,7 +19,7 @@ acme-add-ticket {
 
 .header {
     display:grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(4,1fr);
     text-align: center;
     font-weight: bold;
     margin-bottom: 1rem;
@@ -33,7 +33,7 @@ acme-add-ticket {
 
 .filter-form {
     display:grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(4,1fr);
     width: 35%;   
     align-items: center;
     text-align: center;
@@ -46,7 +46,7 @@ acme-add-ticket {
 
 .ticket-data {
     display: grid;
-    grid-template-columns: repeat(3,1fr);
+    grid-template-columns: repeat(4,1fr);
     padding: .5rem;
     align-items: center;
     cursor: pointer;
@@ -83,4 +83,10 @@ acme-add-ticket {
 
 .complete-button {
     justify-self: center;
+}
+
+.search-bar {
+    width: 15rem;
+    align-self: center;
+    margin-bottom: 3.5rem;
 }
